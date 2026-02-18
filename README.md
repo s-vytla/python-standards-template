@@ -31,7 +31,7 @@ This template enforces organizational Python standards while preserving develope
 mkdir my-project && cd my-project
 
 # Apply template
-copier copy gh:s-vytla/python-standards-template .
+copier copy gh:s-vytla/python-standards-template . --trust
 
 # Initialize git (if not already done)
 git init
@@ -49,7 +49,7 @@ git commit -m "Initial commit with Python standards"
 cd my-existing-project
 
 # Apply template (will not overwrite pyproject.toml or README.md)
-copier copy gh:s-vytla/python-standards-template .
+copier copy gh:s-vytla/python-standards-template . --trust
 
 # Review changes
 git status
