@@ -1,0 +1,53 @@
+# Python Standards Template Configuration
+# This template injects organizational Python standards into projects
+
+_min_copier_version: "9.0.0"
+_subdirectory: template
+_templates_suffix: .jinja
+
+# Files that should never be overwritten if they already exist
+_skip_if_exists:
+  - pyproject.toml
+  - README.md
+
+# Template questions
+python_version:
+  type: str
+  help: Python version to target
+  default: "3.12"
+  choices:
+    - "3.11"
+    - "3.12"
+    - "3.13"
+
+line_length:
+  type: int
+  help: Maximum line length for code formatting
+  default: 88
+
+strict_mypy:
+  type: bool
+  help: Enable strict mypy type checking (recommended for new projects)
+  default: true
+
+use_docker:
+  type: bool
+  help: Include Dockerfile for containerization
+  default: false
+
+use_github_actions:
+  type: bool
+  help: Include GitHub Actions CI workflow
+  default: true
+
+# Jinja extensions for advanced templating
+_jinja_extensions:
+  - jinja2.ext.do
+  - jinja2.ext.loopcontrols
+
+# Exclude patterns
+_exclude:
+  - "*.pyc"
+  - "__pycache__"
+  - "*.swp"
+  - ".DS_Store"

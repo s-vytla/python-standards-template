@@ -1,0 +1,55 @@
+{% if use_docker %}# Multi-stage Dockerfile for Python applications
+# Provides a secure, minimal container with virtual environment isolation
+
+# Build stage
+FROM python:{{ python_version }}-slim as builder
+
+# Set working directory
+WORKDIR /app
+
+# Install build dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create virtual environment
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Copy dependency files
+COPY pyproject.toml setup.py setup.cfg README.md ./
+COPY src ./src
+
+# Install dependencies
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -e .
+
+# Runtime stage
+FROM python:{{ python_version }}-slim
+
+# Create non-root user
+RUN useradd -m -u 1000 appuser
+
+# Set working directory
+WORKDIR /app
+
+# Copy virtual environment from builder
+COPY --from=builder /opt/venv /opt/venv
+
+# Copy application code
+COPY --chown=appuser:appuser . .
+
+# Set PATH to use virtual environment
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Switch to non-root user
+USER appuser
+
+# Health check (override in projects as needed)
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD python -c "print('healthy')" || exit 1
+
+# Default command (override in projects)
+CMD ["python", "-m", "your_module"]
+{% endif %}
