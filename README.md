@@ -12,7 +12,7 @@ This template enforces organizational Python standards while preserving develope
 - Testing configuration (pytest)
 - Pre-commit hooks
 - CI/CD workflows (GitHub Actions)
-- Development commands (Makefile)
+- Development commands (run.sh)
 - Optional Docker configuration
 
 **Never Touches:**
@@ -39,7 +39,7 @@ git add .
 git commit -m "Initial commit with Python standards"
 
 # Install development dependencies
-make install-dev
+./run.sh install_dev
 ```
 
 ### For Existing Projects
@@ -56,12 +56,12 @@ git status
 git diff
 
 # Install pre-commit hooks
-make install-dev
+./run.sh install_dev
 
 # Run quality checks
-make lint
-make type-check
-make test
+./run.sh lint
+./run.sh type_check
+./run.sh test
 ```
 
 ## Template Configuration
@@ -81,7 +81,7 @@ When you apply the template, you'll be asked:
 - `mypy.ini` - Type checking configuration
 - `pytest.ini` - Testing configuration
 - `.pre-commit-config.yaml` - Pre-commit hooks
-- `Makefile` - Standard development commands
+- `run.sh` - Standard development commands
 
 **Conditionally created:**
 - `Dockerfile` - Only if you enable Docker support
@@ -94,18 +94,18 @@ When you apply the template, you'll be asked:
 
 ## Available Commands
 
-The template provides a standard Makefile interface:
+The template provides a standard run.sh interface:
 
 ```bash
-make help          # Show all available commands
-make install       # Install production dependencies
-make install-dev   # Install development dependencies and pre-commit hooks
-make lint          # Run linting checks
-make format        # Format code with auto-fix
-make type-check    # Run type checking
-make test          # Run tests without coverage
-make test-cov      # Run tests with coverage report
-make clean         # Remove all generated files and caches
+./run.sh help          # Show all available commands
+./run.sh install       # Install production dependencies
+./run.sh install_dev   # Install development dependencies and pre-commit hooks
+./run.sh lint          # Run linting checks
+./run.sh format        # Format code with auto-fix
+./run.sh type_check    # Run type checking
+./run.sh test          # Run tests without coverage
+./run.sh test_cov      # Run tests with coverage report
+./run.sh clean         # Remove all generated files and caches
 ```
 
 ## Updating Standards
@@ -347,7 +347,7 @@ testpaths = my_tests  # If you use different directory name
 
 ### CI fails but local tests pass
 
-**Symptom**: GitHub Actions fails but `make test` succeeds
+**Symptom**: GitHub Actions fails but `./run.sh test` succeeds
 
 **Solution**: Ensure all dependencies in pyproject.toml:
 
